@@ -36,6 +36,7 @@ function disconnect() {
         stompClient.disconnect();
     }
     setConnected(false);
+    subscribedChannels = [];
     console.log("Disconnected");
 }
 
@@ -44,8 +45,8 @@ function sendName() {
 
     scLen = subscribedChannels.length;
 
-    for (i = 0; i < fLen; i++) {
-        stompClient.send("/app/channel" + subscribedChannels[0], {}, JSON.stringify({'name': $("#name").val()}));
+    for (i = 0; i < scLen; i++) {
+        stompClient.send("/app/channel/" + subscribedChannels[i], {}, JSON.stringify({'name': $("#name").val()}));
     }
 }
 
@@ -54,6 +55,9 @@ function showGreeting(message) {
 }
 
 function sub(channelID) {
+    var id = "#sub-" + channelID;
+    $( id ).prop("disabled", true);
+    subscribedChannels.push(channelID);
     var channelSubURL = '/topic/channel/' + channelID;
     stompClient.subscribe(channelSubURL, function (greeting) {
         showGreeting(JSON.parse(greeting.body).content);

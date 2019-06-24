@@ -13,10 +13,8 @@ public class AdvancedController {
     @MessageMapping("/channel/{channelId}")
     @SendTo("/topic/channel/{channelId}")
     public Greeting simple(@DestinationVariable String channelId, Message message) {
-        Greeting greeting = new Greeting();
-        greeting.setContent(message.getName());
         System.out.println("AdvancedController: Channel - " + channelId + " Message Received - " + message.getName());
         System.out.println("AdvancedController: Channel - " + channelId + " Greeting Broadcast");
-        return greeting;
+        return new Greeting("AdvancedController: Channel ID - " + channelId + " - Message Content - " + message.getName());
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.util.HtmlUtils;
 
 @Controller
-public class GreetingController {
+public class BasicController {
 
     @MessageMapping("/hello")
     @SendTo("/topic/greetings")
@@ -18,6 +18,6 @@ public class GreetingController {
         Thread.sleep(1000); // simulated delay
         System.out.println("wait one second - finished");
         System.out.println("sending message to client");
-        return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
+        return new Greeting("BasicController: Message Content - " + HtmlUtils.htmlEscape(message.getName()));
     }
 }
