@@ -25,7 +25,12 @@ function connect() {
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
+        // used in tandem with @SendTo of the BasicController.java
         stompClient.subscribe('/topic/greetings', function (greeting) {
+            showGreeting(JSON.parse(greeting.body).content);
+        });
+        // used in tandem with @SendToUser of the BasicController.java
+        stompClient.subscribe('/user/topic/greetings', function (greeting) {
             showGreeting(JSON.parse(greeting.body).content);
         });
     });
