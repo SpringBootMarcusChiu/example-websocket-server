@@ -3,7 +3,9 @@ package com.marcuschiu.examplewebsocket.endpoint;
 import com.marcuschiu.examplewebsocket.model.Greeting;
 import com.marcuschiu.examplewebsocket.model.Message;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.util.HtmlUtils;
@@ -36,7 +38,11 @@ public class BasicController {
      */
     @MessageMapping("/hello/specific-user")
     @SendToUser("/topic/greetings")
-    public Greeting greetingSpecificUser(Message message) throws Exception {
+    public Greeting greetingSpecificUser(@Payload Message message, SimpMessageHeaderAccessor headerAccessor) throws Exception {
+        // Session ID is set in WebSocketConfig.java
+        String sessionId = headerAccessor.getSessionAttributes().get("sessionId").toString();
+        System.out.println("session id: " + sessionId);
+
         System.out.println("received message from client: " + message.getName());
         System.out.println("wait one second - start");
         Thread.sleep(1000); // simulated delay
